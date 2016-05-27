@@ -1,0 +1,72 @@
+# Template my.cnf for PXC
+# Edit to your requirements.
+
+[mysqld]
+log_bin
+server_id		       = 1
+user			       = mysql
+binlog_format                  = ROW
+innodb_buffer_pool_size        = 102400M
+innodb_flush_log_at_trx_commit = 0
+innodb_flush_method            = O_DIRECT
+innodb_log_buffer_size         = 1024M
+innodb_log_files_in_group      = 2
+innodb_log_file_size           = 2000M
+innodb_file_per_table          = 1
+innodb_max_dirty_pages_pct     = 50
+innodb_locks_unsafe_for_binlog = 0
+innodb_use_sys_malloc          = 1
+innodb_write_io_threads        = 16
+innodb_read_io_threads         = 16
+innodb_thread_concurrency      = 40
+datadir                        = /home/mysql/data/
+wsrep_cluster_address          = gcomm://172.17.0.178,172.17.0.179,172.17.0.181
+wsrep_provider                 = /usr/lib64/galera3/libgalera_smm.so
+wsrep_node_address	       = 172.17.0.178
+wsrep_sst_method	       = xtrabackup-v2
+wsrep_sst_auth		       = "sst:Sst"
+
+wsrep_slave_threads            = 80
+wsrep_cluster_name             = Cluster
+wsrep_node_name                = Node1
+
+innodb_locks_unsafe_for_binlog = 1
+innodb_autoinc_lock_mode       = 2
+
+#skip
+skip-external-locking
+skip-name-resolve
+
+#log
+log-error                      = /home/mysql/logs/error.log
+slow_query_log                 = 1
+long_query_time                = 1
+slow_query_log_file            = /home/mysql/logs/mysql.slow
+sync_binlog                    = 1
+binlog_cache_size              = 256M
+max_binlog_cache_size          = 512M
+max_binlog_size                = 2048M
+expire_logs_days               = 30
+
+#other
+tmp_table_size                 = 96M
+max_heap_table_size            = 96M
+key_buffer_size                = 32M
+max_allowed_packet             = 64M
+sort_buffer_size               = 33554432
+read_buffer_size               = 16777216
+read_rnd_buffer_size           = 16777216
+table_open_cache               = 512
+join_buffer_size               = 33554432
+thread_cache_size              = 64
+net_buffer_length              = 512K
+bulk_insert_buffer_size        = 64M
+
+[mysqld_safe]
+pid-file = /run/mysqld/mysql.pid
+!includedir /etc/my.cnf.d
+
+[mysql]
+prompt="\u@\h \R:\m:\s [\d]>"
+no-auto-rehash
+
